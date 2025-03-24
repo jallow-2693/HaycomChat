@@ -7,7 +7,6 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
-// Gestion de l'envoi des messages
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["message"])) {
     $message = htmlspecialchars($_POST["message"]);
     $stmt = $pdo->prepare("INSERT INTO messages (user_id, message) VALUES (?, ?)");
@@ -23,12 +22,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["message"])) {
     <title>Chat - HaycomChat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .chat-box {
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background: #fff;
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .dark-mode .navbar, .dark-mode .card {
+            background-color: #1f1f1f !important;
+            color: white;
+        }
+        .dark-mode .chat-box {
+            background-color: #222;
+            color: white;
+            border: 1px solid #444;
         }
     </style>
 </head>
@@ -40,6 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["message"])) {
         <a class="navbar-brand" href="index.php">HaycomChat</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <button class="btn btn-secondary me-2" id="toggle-dark-mode">🌙 Mode Sombre</button>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout.php">Déconnexion</a>
                 </li>
@@ -53,11 +61,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["message"])) {
     <h2 class="text-center">Bienvenue, <?= htmlspecialchars($_SESSION["username"]) ?> !</h2>
 
     <!-- Boîte de chat -->
-    <div class="chat-box mt-3" id="chat-box">
-        <!-- Les messages seront chargés ici via AJAX -->
+    <div class="chat-box mt-3 p-3" id="chat-box" style="height: 400px; overflow-y: auto; border: 1px solid #ddd; background: #fff;">
+        <!-- Messages chargés via AJAX -->
     </div>
 
-    <!-- Formulaire d'envoi de message -->
+    <!-- Formulaire d'envoi -->
     <form id="chat-form" method="post" class="mt-3">
         <div class="input-group">
             <input type="text" id="message" name="message" class="form-control" placeholder="Écrire un message..." required>
@@ -66,11 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["message"])) {
     </form>
 </div>
 
-<!-- Script Bootstrap & jQuery -->
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Script AJAX pour recharger les messages sans recharger la page -->
+<!-- Script Mode Sombre + AJAX -->
 <script>
 $(document).ready(function() {
     function loadMessages() {
@@ -91,11 +99,27 @@ $(document).ready(function() {
         });
     });
 
-    // Charger les messages toutes les 2 secondes
     setInterval(loadMessages, 2000);
-
-    // Charger les messages au démarrage
     loadMessages();
+
+    // Mode sombre
+    const darkModeButton = document.getElementById("toggle-dark-mode");
+    const body = document.body;
+
+    // Vérifie si le mode sombre est activé
+    if (localStorage.getItem("darkMode") === "enabled") {
+        body.classList.add("dark-mode");
+    }
+
+    darkModeButton.addEventListener("click", function() {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+            localStorage.setItem("darkMode", "enabled");
+        } else {
+            localStorage.setItem("darkMode", "disabled");
+        }
+    });
 });
 </script>
 
