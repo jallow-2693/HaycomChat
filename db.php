@@ -1,13 +1,8 @@
 <?php
-$host = 'localhost'; 
-$dbname = 'haycomchat'; 
-$username = 'root'; 
-$password = ''; 
-
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo = new PDO('mysql:host=sqlxxx.epizy.com;dbname=nom_de_ta_base', 'nom_utilisateur', 'mot_de_passe');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Erreur : " . $e->getMessage());
+    die('Erreur de connexion : ' . $e->getMessage());
 }
 ?>
