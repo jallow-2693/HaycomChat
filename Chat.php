@@ -45,4 +45,54 @@ $pdo->prepare("UPDATE users SET last_active = NOW() WHERE id = ?")->execute([$_S
 
 <div class="container mt-4 chat-container">
     <!-- Chat général -->
-    <div class="chat-box" id="
+    <div class="chat-box" id="chat-box"></div>
+
+    <!-- Liste des utilisateurs en ligne -->
+    <div class="users-online">
+        <h5>Utilisateurs en ligne 🟢</h5>
+        <div id="users-online"></div>
+    </div>
+</div>
+
+<form id="chat-form" method="post" class="mt-3">
+    <div class="input-group">
+        <input type="text" id="message" name="message" class="form-control" placeholder="Écrire un message..." required>
+        <button class="btn btn-primary" type="submit">Envoyer</button>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    function loadMessages() {
+        $.ajax({ url: "load_messages.php", success: function(data) {
+            $("#chat-box").html(data);
+            $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+        }});
+    }
+
+    function loadUsersOnline() {
+        $.ajax({ url: "load_users_online.php", success: function(data) {
+            $("#users-online").html(data);
+        }});
+    }
+
+    $("#chat-form").submit(function(e) {
+        e.preventDefault();
+        $.post("chat.php", $(this).serialize(), function() {
+            $("#message").val("");
+            loadMessages();
+        });
+    });
+
+    setInterval(loadMessages, 2000);
+    setInterval(loadUsersOnline, 5000);
+    loadMessages();
+    loadUsersOnline();
+});
+</script>
+
+</body>
+</html>
