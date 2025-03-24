@@ -16,13 +16,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: chat.php");
         exit;
     } else {
-        echo "Identifiants incorrects.";
+        echo "<div class='alert alert-danger'>Identifiants incorrects.</div>";
     }
 }
 ?>
 
-<form method="post">
-    Nom d'utilisateur : <input type="text" name="username" required><br>
-    Mot de passe : <input type="password" name="password" required><br>
-    <button type="submit">Se connecter</button>
-</form>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card mx-auto shadow p-4" style="max-width: 400px;">
+            <h2 class="text-center">Connexion</h2>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Nom d'utilisateur</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
