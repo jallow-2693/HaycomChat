@@ -1,8 +1,8 @@
 <?php
-$host = 'sql306.epizy.com'; // Remplace par ton hôte MySQL si différent
-$dbname = 'if0_38591142_haycomchat'; // Nom complet de ta base de données
-$username = 'if0_38591142'; // Nom d’utilisateur MySQL fourni par InfinityFree
-$password = 'TON_MOT_DE_PASSE_ICI'; // Mets ici ton vrai mot de passe MySQL
+$host = 'sql212.byetcluster.com'; // 
+$dbname = 'if0_38591142_haycomchat'; 
+$username = 'if0_38591142'; 
+$password = '134662693'; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
